@@ -12,14 +12,16 @@ slider6:-1<-1,1,0.01>R auto-pan start
 slider7:-1<-1,1,0.01>L auto-pan end
 slider8:0<-1,1,0.01>R auto-pan end
 
+slider9:0<-24,24,0.5>Boost gain (dB)
+
 slider16:-3<-24,0,0.25>Output gain (dB)
 
 @init
 HALF_PI = 0.5*$pi;
 sample_len_msec = 1000/srate;
 
-// window length = 10ms
-win_len = 10*0.001*srate;
+// window length = 20ms
+win_len = 20*0.001*srate;
 // filter coefficients
 b1 = exp(-1/win_len);    // tau
 a0 = 1 - b1;             // normalize filter output
@@ -45,6 +47,7 @@ pan_l_delta = (pan_l_end - pan_l_start);
 pan_r_start = slider6;
 pan_r_end = slider8;
 pan_r_delta = (pan_r_end - pan_r_start);
+boost_gain = slider9;
 out_gain = 2^(slider16 / 6);
 
 @sample
@@ -107,6 +110,10 @@ pan_r = pan_r_start+adsr_out*pan_r_delta;
 
 ns0=out_gain*(do_pan_l(s0, pan_l)+do_pan_l(s1, pan_r));
 ns1=out_gain*(do_pan_r(s0, pan_l)+do_pan_r(s1, pan_r));
+
+gain_adsr = 2^(boost_gain*adsr_out/6);
+ns0*=gain_adsr;
+ns1*=gain_adsr;
 
 spl0=ns0;
 spl1=ns1;
