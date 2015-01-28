@@ -18,8 +18,8 @@ slider16:-3<-24,0,0.25>Output gain (dB)
 HALF_PI = 0.5*$pi;
 sample_len_msec = 1000/srate;
 
-// window length = 50ms
-win_len = 50*0.001*srate;
+// window length = 10ms
+win_len = 10*0.001*srate;
 // filter coefficients
 b1 = exp(-1/win_len);    // tau
 a0 = 1 - b1;             // normalize filter output
