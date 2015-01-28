@@ -8,8 +8,8 @@ slider3:200<0,1000,.1>Attack time
 slider4:500<0,2000,1>Release time
 
 slider5:-1<-1,1,0.01>L auto-pan start
-slider6:-1<-1,1,0.01>L auto-pan end
-slider7:-1<-1,1,0.01>R auto-pan start
+slider6:-1<-1,1,0.01>R auto-pan start
+slider7:-1<-1,1,0.01>L auto-pan end
 slider8:0<-1,1,0.01>R auto-pan end
 
 slider16:-3<-24,0,0.25>Output gain (dB)
@@ -40,12 +40,12 @@ adsr_close_dB = slider2;
 adsr_atk_slider = slider3;
 adsr_rel_slider = slider4;
 pan_l_start = slider5;
-pan_l_end = slider6;
+pan_l_end = slider7;
 pan_l_delta = (pan_l_end - pan_l_start);
-pan_r_start = slider7;
+pan_r_start = slider6;
 pan_r_end = slider8;
 pan_r_delta = (pan_r_end - pan_r_start);
-out_gain = exp(slider16 * log(10.0)*0.05);
+out_gain = 2^(slider16 / 6);
 
 @sample
 s0=spl0; s1=spl1;
@@ -60,7 +60,7 @@ diff_rms = sqrt(diff_fout);
 diff_rms_dB = 10 * log10(diff_rms);
 
 slider15 = diff_rms_dB;
-slider_automate(slider15);
+sliderchange(slider15);
 
 // ADSR state machine to move adsr_out from 0 to 1 and back to 0 smoothly depending on ADSR envelope parameters:
 (adsr_state === 0)?(
