@@ -29,6 +29,9 @@ a0 = 1 - b1;             // normalize filter output
 adsr_state = 0;
 adsr_out = 0;
 
+diff_fout = 0;
+diff_rms_dB = -240;
+
 function do_pan_l(samp, pan) (
   samp*cos((.5+pan*.5)*HALF_PI);
 );
@@ -54,13 +57,11 @@ out_gain = 2^(slider16 / 6);
 s0=spl0; s1=spl1;
 
 // Find RMS of difference of L/R:
-diff=s0-s1;
+diff=abs(s0)-abs(s1);
 // filter
 diff_fout = a0*(diff*diff) + b1*diff_fout;
-// get rms
-diff_rms = sqrt(diff_fout);
 // calc rms dB
-diff_rms_dB = 10 * log10(diff_rms);
+diff_rms_dB = 10 * log10(diff_fout + 0.000000000000000000000001);
 
 slider15 = diff_rms_dB;
 sliderchange(slider15);
