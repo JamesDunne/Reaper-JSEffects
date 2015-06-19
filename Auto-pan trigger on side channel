@@ -1,27 +1,29 @@
 desc:Auto-pan based on stereo width ADSR
 
-slider15:0<-90,0,0.01>Detected threshold (dB)
+slider15:-240<-240,0,0.01>Detected threshold (dB)
 
-slider1:-18<-120,0,0.25>Open threshold (dB)
-slider2:-15<-120,0,0.25>Close threshold (dB)
+slider1:-32<-120,0,0.25>Open threshold (dB)
+slider2:-32<-120,0,0.25>Close threshold (dB)
 slider3:200<0,1000,.1>Attack time
-slider4:500<0,2000,1>Release time
+slider4:200<0,2000,1>Release time
 
 slider5:-1<-1,1,0.01>L auto-pan start
 slider6:-1<-1,1,0.01>R auto-pan start
 slider7:-1<-1,1,0.01>L auto-pan end
 slider8:0<-1,1,0.01>R auto-pan end
 
-slider9:0<-24,24,0.5>Boost gain (dB)
+slider9:1<-24,24,0.5>Boost gain (dB)
 
 slider16:-3<-24,0,0.25>Output gain (dB)
+
+slider17:50<0.1,100,1>RMS window (ms)
 
 @init
 HALF_PI = 0.5*$pi;
 sample_len_msec = 1000/srate;
 
-// window length = 20ms
-win_len = 20*0.001*srate;
+// window length = 50ms
+win_len = slider17*0.001*srate;
 // filter coefficients
 b1 = exp(-1/win_len);    // tau
 a0 = 1 - b1;             // normalize filter output
@@ -52,6 +54,11 @@ pan_r_end = slider8;
 pan_r_delta = (pan_r_end - pan_r_start);
 boost_gain = slider9;
 out_gain = 2^(slider16 / 6);
+
+win_len = slider17*0.001*srate;
+// filter coefficients
+b1 = exp(-1/win_len);    // tau
+a0 = 1 - b1;             // normalize filter output
 
 @sample
 s0=spl0; s1=spl1;
