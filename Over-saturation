@@ -29,14 +29,17 @@ bar = sin(slider1/200*$pi);
 gain = 2^(slider64/6);
 
 @sample
+s0=spl0;
+s1=spl1;
 loop(slider2,
   slider1 ? (
-    spl0 = min(max( sin(max(min(spl0,1),-1)*foo)/bar ,-1) ,1);
-    spl1 = min(max( sin(max(min(spl1,1),-1)*foo)/bar ,-1) ,1);
+    s0 = min(max( sin(max(min(s0,1),-1)*foo)/bar ,-1) ,1);
+    s1 = min(max( sin(max(min(s1,1),-1)*foo)/bar ,-1) ,1);
   );
-  spl0 *= gain;
-  spl1 *= gain;
 );
+
+spl0=s0*gain;
+spl1=s1*gain;
 
 @gfx
 
