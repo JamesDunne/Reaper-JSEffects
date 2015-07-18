@@ -1,0 +1,33 @@
+// Limiter tanh(x): Limit using tanh(x) function instead of max(a,b)
+
+desc:tanh(x) limiter
+
+slider1:0<0,32,0.1>Drive
+slider2:-0.1<-6,0,0.1>Ceiling
+
+@init
+//nominal = sqrt(2)/2;
+nominal = 0.5;
+
+function tanh(x) (exp(x)-exp(-x)) / (exp(x)+exp(-x));
+
+@slider
+gain = 2^(slider1/6) * nominal;
+ceiling = 10^(slider2/20);
+
+// Scalar to get output of tanh(x) to -1..1 bounds regardless of the gain:
+invGain = 1/(tanh(gain));
+
+@sample
+// Use tanh as a natural overdriven gain function and normalize to max output of tanh(1*gain):
+spl0=tanh(spl0*gain)*invGain;
+spl1=tanh(spl1*gain)*invGain;
+
+// Hard limit in case input goes over 0dBFS:
+spl0=max(min(spl0,1),-1);
+spl1=max(min(spl1,1),-1);
+
+// Bring down to ceiling volume:
+spl0*=ceiling;
+spl1*=ceiling;
+
