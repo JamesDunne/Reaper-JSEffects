@@ -8,7 +8,7 @@ desc:Soft Clipper/Limiter
 // "tube mastering" plug-in.  This is really just
 // a low threshold brick wall limiter that is all knee.
 
-slider1:0<0,9,0.1>Boost (dB)
+slider1:0<0,18,0.1>Boost (dB)
 slider2:0<-3,1,0.1>Output Brickwall (dB)
 
 @init

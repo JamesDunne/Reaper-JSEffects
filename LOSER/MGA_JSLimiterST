@@ -15,11 +15,13 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 desc:MGA JS Limiter (Unlinked Stereo)
+//tags: dynamics limiter stereo
+//author: LOSER
 
-slider1:0<-30,0,0.1>Threshold
+slider1:0<-30,0,0.1>Threshold (dB)
 slider2:200<0,500,1>Release (ms)
 slider3:75<0,100,1>Link Stereo (%)
-slider4:-0.1<-64,0,0.1>Ceiling
+slider4:-0.1<-6,0,0.1>Ceiling
 
 @init
 HOLDTIME = srate/128;
@@ -87,7 +89,7 @@ g_meter = min(g_meter,g_meterO);
 
 g_meter < gr_meter ? gr_meter=g_meter : ( gr_meter*=gr_meter_decay; gr_meter>1?gr_meter=1; );
 
-@gfx 0 24 // request horizontal/vertical heights (0 means dont care)
+@gfx 0 32 // request horizontal/vertical heights (0 means dont care)
 
   gr_meter *= exp(1/30); gr_meter>1?gr_meter=1; // decay meter here so if the audio processing stops it doesnt "stick"
   gfx_r=1; gfx_g=gfx_b=0; gfx_a=0.8;

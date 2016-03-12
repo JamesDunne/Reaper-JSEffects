@@ -1,12 +1,9 @@
-desc:Time Adjustment Delay
-desc:Time Adjustment Delay or Negative Delay
-//tags: delay time PDC
-//author: Cockos
+desc:time adjustment
 
-slider1:0<-1000,1000,1>Delay Amount (ms)
-slider2:0<-120,12,1>Wet Mix (dB)
-slider3:-120<-120,12,1>Dry Mix (dB)
-slider4:0<-40000,40000,1>Additional Delay Amount (spls)
+slider1:0<-100,100,.1>delay amount (ms)
+slider2:0<-120,12,1>wet mix (dB)
+slider3:-120<-120,12,1>dry mix (dB)
+slider4:0<-40000,40000,1>additional delay amount (samples)
 
 @init
 bpos=0;
