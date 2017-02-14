@@ -1,0 +1,36 @@
+// This effect Copyright (C) 2004 and later Cockos Incorporated
+// License: LGPL - http://www.gnu.org/licenses/lgpl.html
+
+desc: Volume Adjustment from MIDI log2
+//tags: utility gain
+//author: Cockos
+
+slider1:63<0,127,1>Adjustment (log2)
+
+in_pin:left input
+in_pin:right input
+out_pin:left output
+out_pin:right output
+
+@slider
+  p = slider1 / 127.0;
+  // log20a taper (50% -> 20%)
+  p = ((15.5 ^ p) - 1.0) / 14.5;
+  db = log10(p) * 20.0 + 6.0;
+
+  adj1=2 ^ (db/6);
+  doseek=1;
+
+@block
+doseek ? (
+  dadj=(adj1-adj1_s)/samplesblock;
+  doseek=0;
+):(
+  dadj=0;
+  adj1_s=adj1;
+);
+
+@sample
+spl0=spl0*adj1_s;
+spl1=spl1*adj1_s;
+adj1_s+=dadj;
